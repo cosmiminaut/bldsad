@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bulma/0.7.5/css/bulma.min.css">
+    <title>Document</title>
+</head>
+
+<body>
+    <header class="container">
+        <ul class="tabs">
+            <li class="nav-item">
+                <a href="/">Главная</a>
+            </li>
+        </ul>
+    </header>
+
+    <div class="container" id="articles">
+
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+        i = 0
+        var update = $.get('/test', (articles) => {
+            articles.articles.forEach(function (article) {
+                i++
+                $('<div class = "box article" id = "article' + i + '"></div>').appendTo('div#articles');
+                $('<h1 class="title"></h1>').text(article.title).appendTo('div#article' + i);
+                $('<div class="hr"></div>').appendTo('div#article' + i);
+                $('<button class="button" id = "' + i + '">Удалить</button>').appendTo('div#articles');
+                $('<p class="paragraph"></p>').text(article.paragraph).appendTo('div#article' + i);
+                // $('#article').html(
+                // '<h1>'+article.title+'</h1>'+
+                // '<p>'+article.paragraph+'</p>'
+                // )
+            });
+        })
+        $('#articles').on("click", '.button', function () {
+            id = $(this).attr("id")
+            $.ajax({
+                type: "DELETE",
+                url: "/test",
+                data: {
+                    dataId: id
+                },
+                complete : function (article) {
+                    console.log("done")
+                    // location.reload(true);
+                    $('#article'+id).remove();
+                    $('#'+id).remove()
+                    article.article(i-1,1)
+                    
+                }
+            })
+        });
+    </script>
+</body>
+
+</html>

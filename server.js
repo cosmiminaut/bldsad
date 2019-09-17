@@ -32,6 +32,6 @@ app.route('/test')
 app.get('/article', function (req, res) {
     res.sendFile(__dirname + '/public/article.html');
 });
-app.listen(3000, function () {
+app.listen(process.env.PORT || 3000, function () {
     console.log('Example app listening on port 3000!');    
 });
